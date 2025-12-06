@@ -6,7 +6,7 @@ composer require xuey490/database
 
 ```
 
-## 介绍，利用工厂接口类整合Eloquent  和 ThinkORM Model和DB的操作，实现两者的无缝切换
+## 介绍： 利用工厂接口类整合Eloquent 和 ThinkORM 的Model和DB的操作，实现两者的无缝切换
 
 
 - 接口定义 (DatabaseInterface)：明确契约。
