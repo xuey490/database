@@ -38,7 +38,7 @@ $config = [
 
 $logger = new Logger('db'); // 你的 PSR-3 Logger
 
-// 2. 实例化工厂 (无缝切换 'think' 或 'eloquent')
+// 2. 实例化工厂 (无缝切换 'thinkORM' 或 'eloquent')
 $dbFactory = new DatabaseFactory($config, 'eloquent', $logger);
 
 // 3. 使用
@@ -70,8 +70,8 @@ $users = $dbFactory->make('users')->where('id', '>', 1)->get();
 ```php
 use Framework\Database\DatabaseFactory;
 // 假设已配置好 logger 和 config
-// 切换驱动： 'eloquent' (Laravel) 或 'think' (ThinkPHP)
-$driverType = 'eloquent'; 
+// 切换驱动： 'laravelORM' (Laravel) 或 'think' (ThinkPHP)
+$driverType = 'laravelORM'; 
 $db = new DatabaseFactory($config, $driverType, $logger);
 ```
 
@@ -88,7 +88,7 @@ $db = new DatabaseFactory($config, $driverType, $logger);
 $query = $db->make('user');
 
 // 通用逻辑：查找状态为1，年龄大于18，按ID倒序，取前10条
-if ($driverType === 'eloquent') {
+if ($driverType === 'laravelORM') {
     // === Illuminate (Laravel) 风格 ===
     $list = $query->where('status', 1)
                   ->where('age', '>', 18)
@@ -102,7 +102,7 @@ if ($driverType === 'eloquent') {
     });
 
 } else {
-    // === ThinkORM 风格 ===
+    // === thinkORM 风格 ===
     $list = $query->where('status', 1)
                   ->where('age', '>', 18)
                   ->order('id', 'desc') // ThinkPHP 用 order
@@ -155,7 +155,7 @@ if ($driverType === 'eloquent') {
     $userModel->where('status', 0)->update(['status' => 1]);
 
 } else {
-    // ThinkORM
+    // thinkORM
     $user = $userModel->where('username', 'xuey863toy')->find();
     if ($user) {
         $user->email = 'new_email@gmail.com';
@@ -206,7 +206,7 @@ if ($driverType === 'eloquent') {
 ```php
 $pageSize = 20;
 
-if ($driverType === 'eloquent') {
+if ($driverType === 'laravelORM') {
     // 返回 Illuminate\Pagination\LengthAwarePaginator
     $list = $db->make('user')->paginate($pageSize);
     
@@ -246,7 +246,7 @@ $db->make('user')->where('id', 1)->delete();
 ### 6. 事务处理 (Transactions)
 
 这是重构后最需要注意的地方。
-由于工厂已经将 DB 库初始化为全局可用（Think 的 `Db::setConfig` 和 Eloquent 的 `Capsule::setAsGlobal`），我们建议**直接使用各自 ORM 的静态方法来管理事务**，因为事务通常是全局的，而不是绑定在某个模型实例上的。
+由于工厂已经将 DB 库初始化为全局可用（Think 的 `Db::setConfig` 和 laravelORM 的 `Capsule::setAsGlobal`），我们建议**直接使用各自 ORM 的静态方法来管理事务**，因为事务通常是全局的，而不是绑定在某个模型实例上的。
 
 ```php
 // 引入必要的 Facade 或 Manager
@@ -254,7 +254,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use think\facade\Db as ThinkDb;
 
 try {
-    if ($driverType === 'eloquent') {
+    if ($driverType === 'laravelORM') {
         // === Eloquent 事务 ===
         Capsule::beginTransaction();
         
