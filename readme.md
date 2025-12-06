@@ -11,8 +11,8 @@ composer require xuey490/database
 
 - 接口定义 (DatabaseInterface)：明确契约。
 - 主工厂 (DatabaseFactory)：负责分发，解耦具体实现。
-- ThinkORM 实现：清理死代码，专注于 ThinkPHP ORM 的初始化。
-- Eloquent 实现：清理容器绑定逻辑，专注于 Laravel ORM 的初始化。
+- ThinkORM 实现：专注于 ThinkPHP ORM 的初始化。
+- Eloquent 实现：专注于 Laravel ORM 的初始化。
 
 ## 初始化
 现在你的调用方式更纯粹，不再依赖全局环境：
