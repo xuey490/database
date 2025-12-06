@@ -18,36 +18,55 @@ composer require xuey490/database
 现在你的调用方式更纯粹，不再依赖全局环境：
 
 ```
+
 use Framework\Database\DatabaseFactory;
 use Monolog\Logger; // 假设你使用 Monolog
 
-// 1. 准备配置和日志
-$config = [
-    'default' => 'mysql',
-    'connections' => [
-        'mysql' => [
-            'type' => 'mysql',
-            'hostname' => '127.0.0.1',
-            'database' => 'test_db',
-            'username' => 'root',
-            'password' => '',
-            'debug'    => true, // 控制是否记录日志
-        ]
-    ]
-];
+public function index()
+{
+	// 1. 准备配置和日志
+	$config = [
+		'default' => 'mysql',
+		'connections' => [
+			'mysql' => [
+				'type' => 'mysql',
+				'hostname' => '127.0.0.1',
+				// 数据库名
+				'database'           =>  'oa',
+				// 用户名
+				'username'           =>  'root',
+				// 密码
+				'password'           =>  'root',
+				// 端口
+				'hostport'           =>  '3306',
+				// 数据库表前缀
+				'prefix'             =>  'oa_',
+				'debug'    => true, // 控制是否记录日志
+			]
+		]
+	];
 
-$logger = new Logger('db'); // 你的 PSR-3 Logger
+	$logger = new Logger('db'); // 你的 PSR-3 Logger
+	
+	// 2. 配置文件处理器（关键：指定具体的日志文件路径）
+	// 推荐路径：项目根目录下的 storage/logs 文件夹（需确保该文件夹有写入权限）
+	$logFilePath = __DIR__ . '/../../storage/logs/db.log'; // 适配你的控制器路径
+	// 第二个参数是日志级别（DEBUG 会记录所有级别日志，INFO 只记录 INFO 及以上）
+	$handler = new StreamHandler($logFilePath, Logger::DEBUG);
 
-// 2. 实例化工厂 (无缝切换 'thinkORM' 或 'eloquent')
-$dbFactory = new DatabaseFactory($config, 'eloquent', $logger);
+	// 3. 将处理器添加到日志器
+	$logger->pushHandler($handler);
 
-// 3. 使用
-// 方式 A: 类名
-$userModel = $dbFactory(App\Model\User::class); 
+	// 2. 实例化工厂 (无缝切换 'thinkORM' 或 'laravelORM')
+	$dbFactory = new DatabaseFactory($config, 'laravelORM', $logger);	//原地初始化写法
 
-// 方式 B: 表名 (Eloquent模式下返回 Builder, Think模式下返回 Query)
-$users = $dbFactory->make('users')->where('id', '>', 1)->get();
+	// 3. 使用
+	// 方式 A: 类名
+	$userModel = ($dbFactory)(App\Models\Config::class); 
 
+	// 方式 B: 表名 (Eloquent模式下返回 Builder, Think模式下返回 Query)
+	$users = $dbFactory->make('config')->where('id', '>', 1)->get();
+}
 ```
 ## 使用范例
 
