@@ -121,4 +121,9 @@ final class DatabaseFactory implements DatabaseInterface
         // 每次返回 clone，避免污染 query builder
         return $this->modelCache[$modelClass];
     }
+
+    public function __call($method, $parameters)
+    {
+        return $this->driver->$method(...$parameters);
+    }
 }

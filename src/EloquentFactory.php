@@ -148,4 +148,9 @@ class EloquentFactory implements DatabaseInterface
             'debug'    	=> $cfg['debug']     ?? true,
         ];
     }
+
+    public function __call($method, $parameters)
+    {
+        return $this->capsule->getConnection()->$method(...$parameters);
+    }
 }
