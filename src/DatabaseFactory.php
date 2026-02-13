@@ -44,6 +44,12 @@ final class DatabaseFactory implements DatabaseInterface
             default               		=> throw new InvalidArgumentException("Unsupported ORM type: {$ormType}"),
         };
     }
+	
+    // ========== 新增：获取内部 driver 的公共方法 ==========
+    public function getDriver(): DatabaseInterface
+    {
+        return $this->driver;
+    }
 
     /**
      * 快速获取 QueryBuilder（工厂应实现 builder()）

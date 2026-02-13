@@ -69,7 +69,19 @@ class EloquentFactory implements DatabaseInterface
         if ($this->logger && $isDebug ) {
             $this->listenQueryLog();
         }
-    }	
+    }
+	
+    // ========== 新增：获取 Capsule 实例的公共方法 ==========
+    public function getCapsule(): Capsule
+    {
+        return $this->capsule;
+    }
+
+    // ========== 新增：可选 - 获取数据库连接实例（方便直接操作） ==========
+    public function getConnection(): \Illuminate\Database\Connection
+    {
+        return $this->capsule->getConnection();
+    }
 	
     protected function listenQueryLog(): void
     {
