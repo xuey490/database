@@ -61,6 +61,7 @@ class EloquentFactory implements DatabaseInterface
         $this->capsule->setEventDispatcher(new \Illuminate\Events\Dispatcher($container));
 
         // 3. 全局设置
+		// ❗不使用 setAsGlobal（避免 Workerman 污染）
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();
 
@@ -81,6 +82,35 @@ class EloquentFactory implements DatabaseInterface
     public function getConnection(): \Illuminate\Database\Connection
     {
         return $this->capsule->getConnection();
+    }
+
+    public function schema(): \Illuminate\Database\Schema\Builder
+    {
+        return $this->getConnection()->getSchemaBuilder();
+    }
+	
+    // ========================
+    // 事务封装（替代 Facade）
+    // ========================
+
+    public function transaction(\Closure $callback): mixed
+    {
+        return $this->getConnection()->transaction($callback);
+    }
+
+    public function beginTransaction(): void
+    {
+        $this->getConnection()->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->getConnection()->commit();
+    }
+
+    public function rollBack(): void
+    {
+        $this->getConnection()->rollBack();
     }
 	
     protected function listenQueryLog(): void
