@@ -49,12 +49,14 @@ class EloquentFactory implements DatabaseInterface
         // 1. 配置处理
         $defaultConn = $this->config['default'] ?? 'mysql';
         $connectionConfig = $this->config['connections'][$defaultConn] ?? [];
+        
+        //dump($this->config['connections'][$defaultConn]);
 
         // 兼容 ThinkPHP 格式配置
         if (!isset($connectionConfig['driver'])) {
             $connectionConfig = $this->convertThinkToEloquent($connectionConfig);
         }
-		
+        
         $this->capsule->addConnection($connectionConfig);
 
         // 2. 事件分发器 (必须绑定，否则无法监听 SQL)
@@ -176,10 +178,11 @@ class EloquentFactory implements DatabaseInterface
 
     private function convertThinkToEloquent(array $cfg): array
     {
+        
         return [
             'driver'    => $cfg['type']      ?? 'mysql',
             'host'      => $cfg['hostname']  ?? $cfg['host'] ?? '127.0.0.1',
-            'port'      => $cfg['port']      ?? '3306',
+            'port'      => $cfg['hostport']      ?? '3306',
             'database'  => $cfg['database']  ?? '',
             'username'  => $cfg['username']  ?? '',
             'password'  => $cfg['password']  ?? '',
