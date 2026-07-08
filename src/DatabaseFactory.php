@@ -19,6 +19,12 @@ namespace Framework\Database;
 //use Psr\Log\LoggerInterface;
 use InvalidArgumentException;
 
+/**
+ * @method mixed getSchemaBuilder()
+ * @method bool statement(string $sql, array<int|string, mixed> $bindings = [])
+ * @method array<int, object> select(string $sql, array<int|string, mixed> $bindings = [])
+ * @method mixed table(string $table)
+ */
 final class DatabaseFactory implements DatabaseInterface
 {
     private DatabaseInterface $driver;

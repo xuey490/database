@@ -18,6 +18,11 @@ namespace Framework\Database;
 
 /**
  * ORM 模型工厂接口.
+ *
+ * @method mixed getSchemaBuilder()
+ * @method bool statement(string $sql, array<int|string, mixed> $bindings = [])
+ * @method array<int, object> select(string $sql, array<int|string, mixed> $bindings = [])
+ * @method mixed table(string $table)
  */
 interface DatabaseInterface
 {
