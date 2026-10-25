@@ -9,15 +9,24 @@
     }
   },
   "require": {
-    "php": "^8.2",
-	"illuminate/database": "^12.0",
-	"illuminate/events": "^12.0",
-    "topthink/think-orm": "^4.0"
+    "php": "^8.3",
+    "illuminate/bus": "13.30.*",
+    "illuminate/collections": "13.30.*",
+    "illuminate/conditionable": "13.30.*",
+    "illuminate/container": "13.30.*",
+    "illuminate/contracts": "13.30.*",
+    "illuminate/database": "13.30.*",
+    "illuminate/events": "13.30.*",
+    "illuminate/macroable": "13.30.*",
+    "illuminate/pipeline": "13.30.*",
+    "illuminate/reflection": "13.30.*",
+    "illuminate/support": "13.30.*",
+    "topthink/think-orm": "^4.0.51"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.6",
-    "phpunit/phpunit": "^11.0",
-    "phpstan/phpstan": "^2.0"
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "phpunit/phpunit": "^12.5 || ^13.0",
+    "phpstan/phpstan": "^2.3"
   },
   "scripts": {
     "test": "phpunit --colors=always",
